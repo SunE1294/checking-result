@@ -2,54 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DIU Result Checker</title>
-    <style>
-        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
-        input, select { padding: 8px; margin: 5px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #999; padding: 8px; text-align: left; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Result Checker</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Check Your Result</h2>
-    <form id="resultForm">
-        <input type="text" id="student_id" placeholder="Enter Student ID" required>
-        <select id="semester">
-            <option value="Spring 2025">Spring 2025</option>
-            <option value="Fall 2024">Fall 2024</option>
-            <option value="Spring 2024">Spring 2024</option>
-        </select>
-        <button type="submit">Get Result</button>
-    </form>
+    <div class="container">
+        <h1>📄 Check Your Result</h1>
+        <form id="resultForm">
+            <div class="form-group">
+                <label for="studentId">Student ID</label>
+                <input type="text" id="studentId" placeholder="Enter your Student ID" required>
+            </div>
 
-    <div id="resultTable"></div>
+            <div class="form-group">
+                <label for="semester">Select Semester</label>
+                <select id="semester" required>
+                    <option value="" disabled selected>Select Semester</option>
+                    <option value="spring2025">Spring 2025</option>
+                    <option value="fall2025">Fall 2025</option>
+                    <option value="summer2025">Summer 2025</option>
+                </select>
+            </div>
 
-    <script>
-        document.getElementById('resultForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const studentId = document.getElementById('student_id').value;
-            const semester = document.getElementById('semester').value;
+            <button type="submit">View Result</button>
+        </form>
 
-            fetch('/get_result', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: student_id=${studentId}&semester=${semester}
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.error) {
-                    document.getElementById('resultTable').innerHTML = <p style="color:red">${data.error}</p>;
-                } else {
-                    let html = `<table>
-                        <tr><th>Course</th><th>Grade</th><th>Credit</th></tr>`;
-                    data.forEach(item => {
-                        html += <tr><td>${item.courseTitle}</td><td>${item.gradeLetter}</td><td>${item.totalCredit}</td></tr>;
-                    });
-                    html += </table>;
-                    document.getElementById('resultTable').innerHTML = html;
-                }
-            });
-        });
-    </script>
+        <div id="result" class="result-box"></div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
